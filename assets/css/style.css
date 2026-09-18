@@ -1551,3 +1551,263 @@ html {
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), top 0.1s ease-out;
 }
 
+/* ==========================================================================
+   14. FLEET GALLERY SECTION & LIGHTBOX MODAL
+   ========================================================================== */
+.gallery-card {
+  position: relative;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--box-shadow-sm);
+  background-color: var(--primary-dark);
+  cursor: pointer;
+  transition: var(--transition-slow);
+  height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.gallery-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--box-shadow-lg);
+  border-color: rgba(220, 160, 28, 0.35);
+}
+
+.gallery-img-wrapper {
+  position: relative;
+  height: 230px;
+  overflow: hidden;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+}
+
+.gallery-card:hover .gallery-img {
+  transform: scale(1.08);
+}
+
+.gallery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(6, 18, 36, 0.92) 0%, rgba(6, 18, 36, 0.35) 50%, rgba(6, 18, 36, 0.1) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 18px 20px;
+  transition: var(--transition-fast);
+}
+
+.gallery-card:hover .gallery-overlay {
+  background: linear-gradient(to top, rgba(6, 18, 36, 0.96) 0%, rgba(6, 18, 36, 0.45) 55%, rgba(220, 160, 28, 0.18) 100%);
+}
+
+.gallery-zoom-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(220, 160, 28, 0.95);
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: var(--transition-fast);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-card:hover .gallery-zoom-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.gallery-title {
+  color: #FFFFFF;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+  font-family: var(--font-family-heading);
+}
+
+.gallery-category {
+  color: var(--accent-color);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- Lightbox Modal --- */
+.gallery-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(4, 12, 24, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 10050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+  padding: 20px;
+}
+
+.gallery-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gallery-modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-modal-img-box {
+  position: relative;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 25px rgba(220, 160, 28, 0.25);
+  border: 1px solid rgba(220, 160, 28, 0.35);
+  max-height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+}
+
+.gallery-modal-img {
+  max-width: 85vw;
+  max-height: 72vh;
+  object-fit: contain;
+  border-radius: 12px;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  user-select: none;
+}
+
+.gallery-modal-caption {
+  margin-top: 15px;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.gallery-modal-caption h4 {
+  color: #FFFFFF;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.gallery-modal-caption p {
+  color: var(--accent-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+/* Close & Nav Buttons */
+.gallery-modal-close {
+  position: fixed;
+  top: 25px;
+  right: 30px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  z-index: 10060;
+}
+
+.gallery-modal-close:hover {
+  background: var(--accent-color);
+  color: var(--primary-dark);
+  transform: rotate(90deg) scale(1.1);
+}
+
+.gallery-modal-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(11, 32, 62, 0.75);
+  border: 2px solid rgba(220, 160, 28, 0.6);
+  color: #FFFFFF;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  z-index: 10060;
+  backdrop-filter: blur(8px);
+}
+
+.gallery-modal-nav:hover {
+  background: var(--accent-color);
+  color: var(--primary-dark);
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 0 20px rgba(220, 160, 28, 0.6);
+}
+
+.gallery-modal-prev {
+  left: 25px;
+}
+
+.gallery-modal-next {
+  right: 25px;
+}
+
+@media (max-width: 768px) {
+  .gallery-modal-nav {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+  }
+  .gallery-modal-prev {
+    left: 10px;
+  }
+  .gallery-modal-next {
+    right: 10px;
+  }
+  .gallery-modal-close {
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+  .gallery-img-wrapper {
+    height: 200px;
+  }
+}
+
+

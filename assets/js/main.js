@@ -288,4 +288,115 @@ document.addEventListener('DOMContentLoaded', () => {
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         });
     }
+
+    // 9. FLEET GALLERY LIGHTBOX MODAL WITH NEXT / PREV NAVIGATION
+    const galleryCards = document.querySelectorAll('.gallery-card');
+    const galleryModal = document.getElementById('galleryModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalCounter = document.getElementById('modalCounter');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalPrevBtn = document.getElementById('modalPrevBtn');
+    const modalNextBtn = document.getElementById('modalNextBtn');
+
+    if (galleryCards.length > 0 && galleryModal && modalImg) {
+        // Collect gallery items data
+        const galleryItems = [];
+        galleryCards.forEach((card, index) => {
+            galleryItems.push({
+                img: card.getAttribute('data-img'),
+                title: card.getAttribute('data-title'),
+                desc: card.getAttribute('data-desc')
+            });
+
+            card.addEventListener('click', () => {
+                openGalleryModal(index);
+            });
+        });
+
+        let currentGalleryIndex = 0;
+
+        function updateModalContent(index) {
+            const item = galleryItems[index];
+            if (!item) return;
+
+            // Smooth image transition
+            modalImg.style.opacity = '0';
+            modalImg.style.transform = 'scale(0.96)';
+
+            setTimeout(() => {
+                modalImg.src = item.img;
+                modalImg.alt = item.title;
+                if (modalTitle) modalTitle.textContent = item.title;
+                if (modalDesc) modalDesc.textContent = item.desc;
+                if (modalCounter) modalCounter.textContent = `${index + 1} / ${galleryItems.length}`;
+
+                modalImg.style.opacity = '1';
+                modalImg.style.transform = 'scale(1)';
+            }, 120);
+
+            currentGalleryIndex = index;
+        }
+
+        function openGalleryModal(index) {
+            updateModalContent(index);
+            galleryModal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent page background scrolling
+        }
+
+        function closeGalleryModal() {
+            galleryModal.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        function nextGalleryItem() {
+            const nextIndex = (currentGalleryIndex + 1) % galleryItems.length;
+            updateModalContent(nextIndex);
+        }
+
+        function prevGalleryItem() {
+            const prevIndex = (currentGalleryIndex - 1 + galleryItems.length) % galleryItems.length;
+            updateModalContent(prevIndex);
+        }
+
+        if (modalCloseBtn) {
+            modalCloseBtn.addEventListener('click', closeGalleryModal);
+        }
+
+        if (modalNextBtn) {
+            modalNextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                nextGalleryItem();
+            });
+        }
+
+        if (modalPrevBtn) {
+            modalPrevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                prevGalleryItem();
+            });
+        }
+
+        // Close on clicking backdrop
+        galleryModal.addEventListener('click', (e) => {
+            if (e.target === galleryModal || e.target.classList.contains('gallery-modal-content')) {
+                closeGalleryModal();
+            }
+        });
+
+        // Keyboard Controls: Left Arrow, Right Arrow, Escape
+        window.addEventListener('keydown', (e) => {
+            if (!galleryModal.classList.contains('active')) return;
+
+            if (e.key === 'Escape') {
+                closeGalleryModal();
+            } else if (e.key === 'ArrowRight') {
+                nextGalleryItem();
+            } else if (e.key === 'ArrowLeft') {
+                prevGalleryItem();
+            }
+        });
+    }
 });
+
