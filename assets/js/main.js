@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const vehicleRates = {
         'tempo': { rate: 30, text: '₹28 - ₹32/km (Tempo Traveller)' },
         'urbania': { rate: 38, text: '₹38/km (16 Seater Urbania)' },
+        'seater20': { rate: 28, text: '₹28/km (20 Seater Bus)' },
         'seater32': { rate: 42, text: '₹40 - ₹45/km (32 Seater Bus)' },
         'seater45': { rate: 51, text: '₹48 - ₹55/km (45 Seater Bus)' },
         'seater52': { rate: 55, text: '₹50 - ₹60/km (52 Seater Bus)' },
